@@ -216,6 +216,54 @@ body::before{
 }
 .btn-ac:hover{background:rgba(239,68,68,0.32);}
 
+/* ── Back button ── */
+.back-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:6px;flex-shrink:0;
+}
+.back-link{
+  display:flex;align-items:center;gap:0.4rem;
+  font-family:var(--font-m);font-size:0.58rem;
+  letter-spacing:0.08em;color:var(--text-2);
+  text-decoration:none;padding:4px 10px;
+  border-radius:100px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--glass-b);
+  transition:background 0.2s,color 0.2s;
+}
+.back-link:hover{background:rgba(255,255,255,0.1);color:var(--text-1);}
+
+/* ── Scientific toggle pill ── */
+.sci-toggle{
+  display:inline-flex;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--glass-b);
+  border-radius:100px;padding:2px;
+}
+.sci-toggle button{
+  font-family:var(--font-m);font-size:0.52rem;
+  letter-spacing:0.07em;text-transform:uppercase;
+  background:none;border:none;color:var(--text-3);
+  padding:3px 9px;border-radius:100px;cursor:pointer;
+  transition:background 0.2s,color 0.2s;
+}
+.sci-toggle button.active{
+  background:rgba(34,211,238,0.18);color:var(--accent);
+}
+
+/* Scientific rows - hidden by default */
+.sci-rows{ display:none; }
+.sci-rows.show{ display:contents; }
+
+/* Live preview strip */
+.display-preview{
+  font-family:var(--font-m);font-size:0.72rem;
+  color:var(--accent);text-align:right;
+  min-height:16px;opacity:0;
+  transition:opacity 0.2s;
+}
+.display-preview.show{ opacity:0.85; }
+
 /* Span 2 cols */
 .span2{grid-column:span 2;}
 
@@ -439,6 +487,15 @@ body::before{
 <body>
 <div class="app">
 
+  <!-- ── Back nav ── -->
+  <div class="back-nav">
+    <a href="/" class="back-link">← Back</a>
+    <div class="sci-toggle" id="sciToggle">
+      <button id="basicBtn" class="active" onclick="setSciMode(false)">Basic</button>
+      <button id="sciBtn" onclick="setSciMode(true)">Scientific</button>
+    </div>
+  </div>
+
   <!-- ── Mode Navbar ── -->
   <nav class="mode-nav" id="modeNav">
     <button class="mode-btn active" data-mode="calc">Calc</button>
@@ -458,16 +515,19 @@ body::before{
     <div class="display">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span class="display-mode" id="calcMode">DEG</span>
-        <div class="deg-toggle">
+        <div class="deg-toggle" id="degToggleWrap" style="display:none;">
           <button id="degBtn" class="active" onclick="setAngle('deg')">DEG</button>
           <button id="radBtn" onclick="setAngle('rad')">RAD</button>
         </div>
       </div>
       <div class="display-expr" id="expr"></div>
       <div class="display-main" id="main">0</div>
+      <div class="display-preview" id="preview"></div>
     </div>
 
     <div class="btn-grid" id="btnGrid">
+      <!-- Scientific rows (hidden in basic mode) -->
+      <div class="sci-rows" id="sciRows">
       <!-- Row 1: functions -->
       <button class="btn btn-fn" onclick="calcFn('sin')">sin</button>
       <button class="btn btn-fn" onclick="calcFn('cos')">cos</button>
@@ -494,42 +554,45 @@ body::before{
       <button class="btn btn-fn" onclick="calcFn('e')">e</button>
       <button class="btn btn-op" onclick="inputChar('(')">(</button>
       <button class="btn btn-op" onclick="inputChar(')')">)</button>
-      <button class="btn btn-fn" onclick="calcFn('pct')">%</button>
+      <button class="btn btn-fn" onclick="calcFn('abs')">|x|</button>
+      </div>
 
-      <!-- Row 5: nums -->
+      <!-- Row 5: nums (always visible) -->
       <button class="btn btn-ac" onclick="allClear()">AC</button>
       <button class="btn btn-clear" onclick="delChar()">⌫</button>
       <button class="btn btn-fn" onclick="toggleSign()">±</button>
+      <button class="btn btn-op" onclick="calcFn('pct')">%</button>
       <button class="btn btn-op" onclick="inputOp('/')">÷</button>
-      <button class="btn btn-op" onclick="inputOp('*')">×</button>
 
       <!-- Row 6 -->
       <button class="btn" onclick="inputDigit('7')">7</button>
       <button class="btn" onclick="inputDigit('8')">8</button>
       <button class="btn" onclick="inputDigit('9')">9</button>
+      <button class="btn btn-op" onclick="inputOp('*')">×</button>
       <button class="btn btn-op" onclick="inputOp('-')">−</button>
-      <button class="btn btn-op" onclick="inputOp('+')">+</button>
 
       <!-- Row 7 -->
       <button class="btn" onclick="inputDigit('4')">4</button>
       <button class="btn" onclick="inputDigit('5')">5</button>
       <button class="btn" onclick="inputDigit('6')">6</button>
-      <!-- Blank spacer merged into equals below -->
-      <button class="btn btn-fn" onclick="calcFn('abs')">|x|</button>
-      <button class="btn btn-fn" onclick="calcFn('floor')">⌊x⌋</button>
+      <button class="btn btn-op" onclick="inputOp('+')">+</button>
+      <!-- Sci-only buttons in basic mode this slot is blank -->
+      <button class="btn btn-fn sci-only" onclick="calcFn('floor')" style="display:none;">⌊x⌋</button>
+      <button class="btn btn-fn basic-only" style="background:transparent;border-color:transparent;pointer-events:none;"></button>
 
       <!-- Row 8 -->
       <button class="btn" onclick="inputDigit('1')">1</button>
       <button class="btn" onclick="inputDigit('2')">2</button>
       <button class="btn" onclick="inputDigit('3')">3</button>
-      <button class="btn btn-fn" onclick="calcFn('ceil')">⌈x⌉</button>
-      <button class="btn btn-fn" onclick="calcFn('round')">⌊·⌉</button>
+      <button class="btn btn-fn sci-only" onclick="calcFn('ceil')" style="display:none;">⌈x⌉</button>
+      <button class="btn btn-fn basic-only" style="background:transparent;border-color:transparent;pointer-events:none;"></button>
+      <button class="btn btn-eq span2" onclick="calculate()" style="grid-row:span 2;">=</button>
 
       <!-- Row 9 -->
-      <button class="btn" onclick="inputDigit('0')">0</button>
+      <button class="btn span2" onclick="inputDigit('0')">0</button>
       <button class="btn" onclick="inputDot()">.</button>
-      <button class="btn btn-fn" onclick="calcFn('exp10')">EE</button>
-      <button class="btn btn-eq span2" onclick="calculate()">=</button>
+      <button class="btn btn-fn sci-only" onclick="calcFn('round')" style="display:none;">⌊·⌉</button>
+      <button class="btn basic-only" style="background:transparent;border-color:transparent;pointer-events:none;"></button>
     </div>
   </div>
 
@@ -550,7 +613,7 @@ body::before{
           <option value="nm">Nautical Mile</option>
           <option value="ly">Light Year</option>
         </select>
-        <div class="conv-val editable" id="length-in" contenteditable="true" oninput="doConvert('length')">1</div>
+        <div class="conv-val editable" id="length-in" inputmode="decimal" contenteditable="true" oninput="doConvert('length')">1</div>
       </div>
       <div style="display:flex;justify-content:center;">
         <button class="conv-swap" onclick="swapConv('length')">⇅</button>
@@ -585,7 +648,7 @@ body::before{
           <option value="K">Kelvin (K)</option>
           <option value="R">Rankine (°R)</option>
         </select>
-        <div class="conv-val editable" id="temp-in" contenteditable="true" oninput="doConvert('temp')">0</div>
+        <div class="conv-val editable" id="temp-in" inputmode="decimal" contenteditable="true" oninput="doConvert('temp')">0</div>
       </div>
       <div style="display:flex;justify-content:center;">
         <button class="conv-swap" onclick="swapConv('temp')">⇅</button>
@@ -618,7 +681,7 @@ body::before{
           <option value="st">Stone (st)</option>
           <option value="ct">Carat (ct)</option>
         </select>
-        <div class="conv-val editable" id="weight-in" contenteditable="true" oninput="doConvert('weight')">1</div>
+        <div class="conv-val editable" id="weight-in" inputmode="decimal" contenteditable="true" oninput="doConvert('weight')">1</div>
       </div>
       <div style="display:flex;justify-content:center;">
         <button class="conv-swap" onclick="swapConv('weight')">⇅</button>
@@ -656,7 +719,7 @@ body::before{
           <option value="acre">Acre</option>
           <option value="ha">Hectare</option>
         </select>
-        <div class="conv-val editable" id="area-in" contenteditable="true" oninput="doConvert('area')">1</div>
+        <div class="conv-val editable" id="area-in" inputmode="decimal" contenteditable="true" oninput="doConvert('area')">1</div>
       </div>
       <div style="display:flex;justify-content:center;">
         <button class="conv-swap" onclick="swapConv('area')">⇅</button>
@@ -692,7 +755,7 @@ body::before{
           <option value="c">Speed of Light</option>
           <option value="mach">Mach</option>
         </select>
-        <div class="conv-val editable" id="speed-in" contenteditable="true" oninput="doConvert('speed')">1</div>
+        <div class="conv-val editable" id="speed-in" inputmode="decimal" contenteditable="true" oninput="doConvert('speed')">1</div>
       </div>
       <div style="display:flex;justify-content:center;">
         <button class="conv-swap" onclick="swapConv('speed')">⇅</button>
@@ -738,7 +801,7 @@ body::before{
           <option value="BTC">BTC — Bitcoin</option>
           <option value="ETH">ETH — Ethereum</option>
         </select>
-        <div class="conv-val editable" id="currency-in" contenteditable="true" oninput="doConvert('currency')">1</div>
+        <div class="conv-val editable" id="currency-in" inputmode="decimal" contenteditable="true" oninput="doConvert('currency')">1</div>
       </div>
       <div style="display:flex;justify-content:center;">
         <button class="conv-swap" onclick="swapConv('currency')">⇅</button>
@@ -880,6 +943,56 @@ body::before{
 
 <script>
 /* ══════════════════════════════════════
+   SCIENTIFIC MODE TOGGLE
+══════════════════════════════════════ */
+let sciMode = false;
+
+function setSciMode(on) {
+  sciMode = on;
+  document.getElementById('basicBtn').classList.toggle('active', !on);
+  document.getElementById('sciBtn').classList.toggle('active', on);
+  document.getElementById('sciRows').classList.toggle('show', on);
+  document.getElementById('degToggleWrap').style.display = on ? 'flex' : 'none';
+  // show/hide sci-only vs basic-only buttons
+  document.querySelectorAll('.sci-only').forEach(el => el.style.display = on ? '' : 'none');
+  document.querySelectorAll('.basic-only').forEach(el => el.style.display = on ? 'none' : '');
+}
+setSciMode(false); // start in basic mode
+
+/* ══════════════════════════════════════
+   LIVE PREVIEW
+══════════════════════════════════════ */
+function updatePreview() {
+  const previewEl = document.getElementById('preview');
+  if (!expr || justCalculated) {
+    previewEl.textContent = '';
+    previewEl.classList.remove('show');
+    return;
+  }
+  try {
+    let e = expr
+      .replace(/÷/g,'/')
+      .replace(/×/g,'*')
+      .replace(/−/g,'-')
+      .replace(/\^/g,'**')
+      .replace(/π/g, Math.PI)
+      .replace(/e(?!\d)/g, Math.E);
+    // Only evaluate if expr ends with a number (not an operator)
+    if (/[\+\-\*\/\^\(]$/.test(e.trim())) {
+      previewEl.classList.remove('show');
+      return;
+    }
+    let res = Function('"use strict"; return (' + e + ')')();
+    if (isNaN(res) || !isFinite(res)) { previewEl.classList.remove('show'); return; }
+    res = +parseFloat(res.toPrecision(12));
+    previewEl.textContent = '= ' + res;
+    previewEl.classList.add('show');
+  } catch(err) {
+    previewEl.classList.remove('show');
+  }
+}
+
+/* ══════════════════════════════════════
    CALCULATOR LOGIC
 ══════════════════════════════════════ */
 let expr = '';
@@ -908,6 +1021,7 @@ function inputDigit(d){
   else result += d;
   expr += d;
   updateDisplay(result, expr);
+  updatePreview();
 }
 
 function inputDot(){
@@ -919,6 +1033,7 @@ function inputDot(){
   if(result === '' || justCalculated) result = '0';
   result += '.'; expr += '.';
   updateDisplay(result, expr);
+  updatePreview();
 }
 
 function inputOp(op){
@@ -934,6 +1049,7 @@ function inputOp(op){
   }
   exprEl.textContent = expr.replace(/\*/g,'×').replace(/\//g,'÷');
   result = '';
+  updatePreview();
 }
 
 function inputChar(c){
@@ -945,6 +1061,7 @@ function inputChar(c){
 function allClear(){
   expr=''; result='0'; justCalculated=false;
   updateDisplay('0','');
+  document.getElementById('preview').classList.remove('show');
 }
 
 function delChar(){
@@ -952,6 +1069,7 @@ function delChar(){
   expr = expr.slice(0,-1);
   result = result.slice(0,-1) || '0';
   updateDisplay(result, expr.replace(/\*/g,'×').replace(/\//g,'÷'));
+  updatePreview();
 }
 
 function toggleSign(){
