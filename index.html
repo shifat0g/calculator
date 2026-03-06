@@ -6,33 +6,33 @@
 <title>Calculator — Shifat</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-/* ── Variables — Ocean Theme ── */
+/* ── Variables — Premium Dark Glass ── */
 :root {
-  --bg:          #06090f;
-  --bg2:         #0a0f1a;
-  --glass:       rgba(255,255,255,0.05);
-  --glass-b:     rgba(255,255,255,0.09);
-  --glass-h:     rgba(255,255,255,0.10);
-  --accent:      #22d3ee;
-  --accent2:     #2670c4;
-  --accent-soft: rgba(34,211,238,0.18);
-  --accent-glow: rgba(34,211,238,0.12);
-  --text-1:      #eef2f0;
-  --text-2:      #7ea8b8;
-  --text-3:      #3a5a6a;
-  --op-col:      rgba(34,211,238,0.15);
-  --op-col-h:    rgba(34,211,238,0.28);
-  --eq-col:      linear-gradient(135deg, #1a3a6e, #2670c4);
-  --fn-col:      rgba(38,112,196,0.18);
-  --fn-col-h:    rgba(38,112,196,0.32);
-  --num-col:     rgba(255,255,255,0.04);
-  --num-col-h:   rgba(255,255,255,0.09);
-  --font-d:      'Plus Jakarta Sans', sans-serif;
-  --font-m:      'DM Mono', monospace;
-  --r:           12px;
-  --r-sm:        8px;
+  --bg:          #050608;
+  --bg2:         #08090d;
+  --glass:       rgba(255,255,255,0.04);
+  --glass-b:     rgba(255,255,255,0.08);
+  --glass-h:     rgba(255,255,255,0.12);
+  --accent:      #a78bfa;
+  --accent2:     #7c3aed;
+  --accent-soft: rgba(167,139,250,0.16);
+  --accent-glow: rgba(167,139,250,0.10);
+  --text-1:      #f0eeff;
+  --text-2:      #8b7fa8;
+  --text-3:      #3d3558;
+  --op-col:      rgba(167,139,250,0.13);
+  --op-col-h:    rgba(167,139,250,0.24);
+  --eq-col:      linear-gradient(145deg, #4c1d95 0%, #6d28d9 50%, #7c3aed 100%);
+  --fn-col:      rgba(139,92,246,0.12);
+  --fn-col-h:    rgba(139,92,246,0.24);
+  --num-col:     rgba(255,255,255,0.035);
+  --num-col-h:   rgba(255,255,255,0.075);
+  --font-d:      'Outfit', sans-serif;
+  --font-m:      'JetBrains Mono', monospace;
+  --r:           14px;
+  --r-sm:        10px;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -51,9 +51,19 @@ body::before{
   content:'';
   position:fixed;inset:0;
   background:
-    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(38,112,196,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(34,211,238,0.10) 0%, transparent 55%);
+    radial-gradient(ellipse 70% 55% at 15% -5%, rgba(109,40,217,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 45% at 85% 105%, rgba(167,139,250,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(91,33,182,0.06) 0%, transparent 70%);
   pointer-events:none;z-index:0;
+}
+
+/* Grain overlay for depth */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+  pointer-events:none;z-index:0;opacity:0.5;
 }
 
 /* ── Wrapper ── */
@@ -68,13 +78,16 @@ body::before{
 
 /* ── Top Mode Navbar ── */
 .mode-nav{
-  display:flex;gap:4px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid var(--glass-b);
+  display:flex;gap:3px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(167,139,250,0.12);
   border-radius:100px;
   padding:4px;
   margin-bottom:8px;
   flex-shrink:0;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  box-shadow:0 2px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
 }
 .mode-btn{
   flex:1;
@@ -92,9 +105,9 @@ body::before{
 }
 .mode-btn:hover{color:var(--text-1);}
 .mode-btn.active{
-  background:rgba(34,211,238,0.15);
+  background:rgba(167,139,250,0.15);
   color:var(--accent);
-  border:1px solid rgba(34,211,238,0.3);
+  border:1px solid rgba(167,139,250,0.3);
 }
 
 /* ── Panels ── */
@@ -108,14 +121,16 @@ body::before{
 
 /* Display */
 .display{
-  background:rgba(255,255,255,0.03);
-  border:1px solid var(--glass-b);
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(167,139,250,0.15);
   border-radius:var(--r);
-  padding:10px 16px 8px;
+  padding:12px 18px 10px;
   flex-shrink:0;
-  min-height:90px;
+  min-height:96px;
   display:flex;flex-direction:column;justify-content:space-between;
-  backdrop-filter:blur(10px);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  box-shadow:0 4px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06), 0 0 0 1px rgba(0,0,0,0.3);
 }
 .display-expr{
   font-family:var(--font-m);
@@ -127,13 +142,14 @@ body::before{
 }
 .display-main{
   font-family:var(--font-m);
-  font-size:2.4rem;
+  font-size:2.5rem;
   font-weight:400;
   color:var(--text-1);
   text-align:right;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   line-height:1.1;
   transition:font-size 0.1s;
+  letter-spacing:-0.02em;
 }
 .display-mode{
   font-family:var(--font-m);font-size:0.55rem;
@@ -154,30 +170,31 @@ body::before{
 .btn{
   display:flex;align-items:center;justify-content:center;
   border-radius:var(--r-sm);
-  border:1px solid var(--glass-b);
+  border:1px solid rgba(255,255,255,0.07);
   background:var(--num-col);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
   color:var(--text-1);
   font-family:var(--font-m);
-  font-size:0.82rem;
+  font-size:0.84rem;
+  font-weight:400;
   cursor:pointer;
-  transition:background 0.15s, border-color 0.15s, transform 0.08s;
-  box-shadow:0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.07);
+  transition:background 0.12s, border-color 0.12s, transform 0.07s, box-shadow 0.12s;
+  box-shadow:0 2px 10px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
   position:relative;overflow:hidden;
 }
 .btn::before{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,0.07) 0%,transparent 60%);
+  background:linear-gradient(145deg,rgba(255,255,255,0.055) 0%,transparent 55%);
   pointer-events:none;
 }
-.btn:active{transform:scale(0.94);}
-.btn:hover{background:var(--num-col-h);border-color:rgba(255,255,255,0.15);}
+.btn:active{transform:scale(0.93); box-shadow:0 1px 4px rgba(0,0,0,0.4);}
+.btn:hover{background:var(--num-col-h);border-color:rgba(255,255,255,0.13);}
 
 /* Operator buttons */
 .btn-op{
   background:var(--op-col);
-  border-color:rgba(34,211,238,0.25);
+  border-color:rgba(167,139,250,0.22);
   color:var(--accent);
 }
 .btn-op:hover{background:var(--op-col-h);}
@@ -185,36 +202,37 @@ body::before{
 /* Function buttons */
 .btn-fn{
   background:var(--fn-col);
-  border-color:rgba(38,112,196,0.3);
-  color:#7ec8e3;
-  font-size:0.72rem;
+  border-color:rgba(139,92,246,0.22);
+  color:#c4b5fd;
+  font-size:0.74rem;
 }
 .btn-fn:hover{background:var(--fn-col-h);}
 
 /* Equals */
 .btn-eq{
   background:var(--eq-col);
-  border-color:rgba(34,211,238,0.4);
+  border-color:rgba(167,139,250,0.35);
   color:#fff;
-  font-size:1.1rem;
-  box-shadow:0 2px 16px rgba(34,211,238,0.2), inset 0 1px 0 rgba(255,255,255,0.15);
+  font-size:1.2rem;
+  font-weight:500;
+  box-shadow:0 2px 20px rgba(109,40,217,0.35), inset 0 1px 0 rgba(255,255,255,0.18);
 }
-.btn-eq:hover{opacity:0.9;}
+.btn-eq:hover{opacity:0.9; box-shadow:0 4px 28px rgba(109,40,217,0.5);}
 
 /* Clear / special */
 .btn-clear{
-  background:rgba(239,68,68,0.14);
-  border-color:rgba(239,68,68,0.28);
+  background:rgba(239,68,68,0.12);
+  border-color:rgba(239,68,68,0.22);
   color:#f87171;
 }
-.btn-clear:hover{background:rgba(239,68,68,0.24);}
+.btn-clear:hover{background:rgba(239,68,68,0.22);}
 
 .btn-ac{
-  background:rgba(239,68,68,0.22);
-  border-color:rgba(239,68,68,0.4);
+  background:rgba(239,68,68,0.18);
+  border-color:rgba(239,68,68,0.35);
   color:#fca5a5;
 }
-.btn-ac:hover{background:rgba(239,68,68,0.32);}
+.btn-ac:hover{background:rgba(239,68,68,0.28);}
 
 /* ── Back button ── */
 .back-nav{
@@ -248,7 +266,7 @@ body::before{
   transition:background 0.2s,color 0.2s;
 }
 .sci-toggle button.active{
-  background:rgba(34,211,238,0.18);color:var(--accent);
+  background:rgba(167,139,250,0.18);color:var(--accent);
 }
 
 /* Scientific rows - hidden by default */
@@ -257,12 +275,12 @@ body::before{
 
 /* Live preview strip */
 .display-preview{
-  font-family:var(--font-m);font-size:0.72rem;
+  font-family:var(--font-m);font-size:0.75rem;
   color:var(--accent);text-align:right;
   min-height:16px;opacity:0;
-  transition:opacity 0.2s;
+  transition:opacity 0.18s;
 }
-.display-preview.show{ opacity:0.85; }
+.display-preview.show{ opacity:0.9; }
 
 /* Span 2 cols */
 .span2{grid-column:span 2;}
@@ -286,7 +304,7 @@ body::before{
   transition:background 0.2s,color 0.2s;
 }
 .deg-toggle button.active{
-  background:rgba(34,211,238,0.18);
+  background:rgba(167,139,250,0.18);
   color:var(--accent);
 }
 
@@ -296,13 +314,15 @@ body::before{
 .conv-panel{gap:8px;}
 
 .conv-display{
-  background:rgba(255,255,255,0.03);
-  border:1px solid var(--glass-b);
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(167,139,250,0.15);
   border-radius:var(--r);
-  padding:10px 14px;
+  padding:12px 16px;
   flex-shrink:0;
-  backdrop-filter:blur(10px);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
   display:flex;flex-direction:column;gap:8px;
+  box-shadow:0 4px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 .conv-row{display:flex;gap:8px;align-items:center;}
 .conv-label{
@@ -323,7 +343,7 @@ body::before{
   appearance:none;
   -webkit-appearance:none;
 }
-.conv-select:focus{border-color:rgba(34,211,238,0.4);}
+.conv-select:focus{border-color:rgba(167,139,250,0.4);}
 .conv-val{
   font-family:var(--font-m);font-size:1.05rem;
   color:var(--text-1);
@@ -336,15 +356,19 @@ body::before{
 }
 .conv-val.editable{
   cursor:text;outline:none;
+  transition:border-color 0.15s, box-shadow 0.15s;
 }
-.conv-val.editable:focus{border-color:rgba(34,211,238,0.4);}
+.conv-val.editable:focus{
+  border-color:rgba(167,139,250,0.5);
+  box-shadow:0 0 0 2px rgba(167,139,250,0.12);
+}
 .conv-swap{
-  background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.25);
+  background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.22);
   border-radius:50%;width:28px;height:28px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:0.85rem;
   flex-shrink:0;transition:background 0.2s;
 }
-.conv-swap:hover{background:rgba(34,211,238,0.2);}
+.conv-swap:hover{background:rgba(167,139,250,0.2);}
 
 .conv-note{
   font-family:var(--font-m);font-size:0.58rem;
@@ -359,19 +383,25 @@ body::before{
   gap:5px;
   flex:1;min-height:0;
 }
+/* Hide keypad for panels that use native keyboard */
+.conv-grid.native-kb{
+  display:none;
+}
 
 /* ══════════════════════════════
    BMI / BMR PANEL
 ══════════════════════════════ */
 .health-panel{gap:8px;overflow-y:auto;}
 .health-card{
-  background:rgba(255,255,255,0.03);
-  border:1px solid var(--glass-b);
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(167,139,250,0.15);
   border-radius:var(--r);
   padding:12px 14px;
-  backdrop-filter:blur(10px);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
   display:flex;flex-direction:column;gap:10px;
   flex-shrink:0;
+  box-shadow:0 4px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 .health-title{
   font-family:var(--font-m);font-size:0.6rem;
@@ -394,7 +424,7 @@ body::before{
   padding:6px 10px;
   outline:none;
 }
-.health-input:focus{border-color:rgba(34,211,238,0.4);}
+.health-input:focus{border-color:rgba(167,139,250,0.4);}
 .health-unit{
   font-family:var(--font-m);font-size:0.62rem;
   color:var(--text-3);width:30px;flex-shrink:0;
@@ -414,22 +444,22 @@ body::before{
   transition:background 0.2s,color 0.2s;
 }
 .health-seg button.active{
-  background:rgba(34,211,238,0.18);color:var(--accent);
+  background:rgba(167,139,250,0.18);color:var(--accent);
 }
 .health-calc-btn{
   display:flex;align-items:center;justify-content:center;
   padding:9px;border-radius:var(--r-sm);
   background:var(--eq-col);
-  border:1px solid rgba(34,211,238,0.4);
+  border:1px solid rgba(167,139,250,0.35);
   color:#fff;font-family:var(--font-m);font-size:0.75rem;
   letter-spacing:0.08em;text-transform:uppercase;
   cursor:pointer;
-  box-shadow:0 2px 16px rgba(34,211,238,0.15),inset 0 1px 0 rgba(255,255,255,0.12);
+  box-shadow:0 2px 20px rgba(109,40,217,0.3),inset 0 1px 0 rgba(255,255,255,0.15);
 }
 .health-calc-btn:hover{opacity:0.88;}
 .health-result{
-  background:rgba(34,211,238,0.06);
-  border:1px solid rgba(34,211,238,0.2);
+  background:rgba(167,139,250,0.06);
+  border:1px solid rgba(167,139,250,0.2);
   border-radius:var(--r-sm);
   padding:10px 14px;
   display:none;flex-direction:column;gap:4px;
@@ -635,7 +665,7 @@ body::before{
         <div class="conv-val" id="length-out">1000</div>
       </div>
     </div>
-    <div class="conv-grid" id="conv-keypad-length"></div>
+    <div class="conv-grid native-kb" id="conv-keypad-length"></div>
   </div>
 
   <div class="panel conv-panel" id="panel-temp">
@@ -664,7 +694,7 @@ body::before{
         <div class="conv-val" id="temp-out">32</div>
       </div>
     </div>
-    <div class="conv-grid" id="conv-keypad-temp"></div>
+    <div class="conv-grid native-kb" id="conv-keypad-temp"></div>
   </div>
 
   <div class="panel conv-panel" id="panel-weight">
@@ -701,7 +731,7 @@ body::before{
         <div class="conv-val" id="weight-out">1000</div>
       </div>
     </div>
-    <div class="conv-grid" id="conv-keypad-weight"></div>
+    <div class="conv-grid native-kb" id="conv-keypad-weight"></div>
   </div>
 
   <div class="panel conv-panel" id="panel-area">
@@ -740,7 +770,7 @@ body::before{
         <div class="conv-val" id="area-out"></div>
       </div>
     </div>
-    <div class="conv-grid" id="conv-keypad-area"></div>
+    <div class="conv-grid native-kb" id="conv-keypad-area"></div>
   </div>
 
   <div class="panel conv-panel" id="panel-speed">
@@ -773,7 +803,7 @@ body::before{
         <div class="conv-val" id="speed-out"></div>
       </div>
     </div>
-    <div class="conv-grid" id="conv-keypad-speed"></div>
+    <div class="conv-grid native-kb" id="conv-keypad-speed"></div>
   </div>
 
   <div class="panel conv-panel" id="panel-currency">
@@ -833,7 +863,7 @@ body::before{
       </div>
       <div class="conv-note" id="currency-note">Fetching live rates…</div>
     </div>
-    <div class="conv-grid" id="conv-keypad-currency"></div>
+    <div class="conv-grid native-kb" id="conv-keypad-currency"></div>
   </div>
 
 
@@ -1227,6 +1257,40 @@ function convKey(type, k){
   doConvert(type);
 }
 
+// Sanitize contenteditable inputs: allow only numeric characters
+CONV_TYPES.forEach(type => {
+  const el = document.getElementById(type+'-in');
+  if(!el) return;
+
+  // On focus: select all text for easy replacement on desktop
+  el.addEventListener('focus', () => {
+    const range = document.createRange();
+    const sel = window.getSelection();
+    range.selectNodeContents(el);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  });
+
+  // Prevent non-numeric paste / input
+  el.addEventListener('keydown', ev => {
+    const allowed = ['0','1','2','3','4','5','6','7','8','9','.','Backspace','Delete','ArrowLeft','ArrowRight','Tab','Enter','-'];
+    if(!allowed.includes(ev.key) && !ev.ctrlKey && !ev.metaKey){
+      ev.preventDefault();
+    }
+    // Prevent duplicate decimal
+    if(ev.key === '.' && el.textContent.includes('.')) ev.preventDefault();
+    // Enter triggers convert
+    if(ev.key === 'Enter'){ ev.preventDefault(); doConvert(type); }
+  });
+
+  el.addEventListener('paste', ev => {
+    ev.preventDefault();
+    const text = (ev.clipboardData || window.clipboardData).getData('text');
+    const num = text.replace(/[^0-9.\-]/g,'');
+    if(num) { el.textContent = num; doConvert(type); }
+  });
+});
+
 /* ══════════════════════════════════════
    UNIT CONVERSION DATA
 ══════════════════════════════════════ */
@@ -1297,7 +1361,7 @@ function swapConv(type){
 CONV_TYPES.filter(t=>t!=='currency').forEach(t=>doConvert(t));
 
 /* ══════════════════════════════════════
-   CURRENCY — Free API (exchangerate-api)
+   CURRENCY — Multi-source with BDT support
 ══════════════════════════════════════ */
 let fxRates = null;
 let fxBase  = 'USD';
@@ -1307,11 +1371,10 @@ async function fetchRates(){
   note.textContent = 'Fetching live rates…';
   note.className = 'conv-note';
   try {
-    // Frankfurter — ECB-backed, no API key, highly reliable
-    // Fetch with USD as base; BTC/ETH handled separately via Coinbase
-    const res = await fetch('https://api.frankfurter.app/latest?from=USD');
+    // Primary: Open.er-api.com — free, reliable, includes BDT, 1500 req/month
+    const res = await fetch('https://open.er-api.com/v6/latest/USD');
     const data = await res.json();
-    if(data.rates){
+    if(data.result === 'success' && data.rates){
       fxRates = { USD: 1, ...data.rates };
       fxBase  = 'USD';
       // Fetch crypto prices from Coinbase (free, no key)
@@ -1325,13 +1388,27 @@ async function fetchRates(){
         fxRates['BTC'] = 1 / parseFloat(btcData.data.amount);
         fxRates['ETH'] = 1 / parseFloat(ethData.data.amount);
       } catch(_){ /* crypto unavailable — skip */ }
-      const updated = new Date(data.date).toLocaleDateString();
-      note.textContent = `ECB rates · ${updated} · crypto: Coinbase`;
+      const updated = new Date(data.time_last_update_utc).toLocaleDateString();
+      note.textContent = `Live rates · ${updated} · crypto: Coinbase`;
       doConvert('currency');
-    } else {
-      throw new Error('API error');
+      return;
     }
-  } catch(e){
+    throw new Error('Primary API failed');
+  } catch(e1){
+    // Fallback: Frankfurter (ECB-backed, no BDT — but still try)
+    try {
+      const res2 = await fetch('https://api.frankfurter.app/latest?from=USD');
+      const data2 = await res2.json();
+      if(data2.rates){
+        fxRates = { USD: 1, ...data2.rates };
+        fxBase  = 'USD';
+        const updated = new Date(data2.date).toLocaleDateString();
+        note.textContent = `ECB rates (fallback) · ${updated}`;
+        note.className = 'conv-note';
+        doConvert('currency');
+        return;
+      }
+    } catch(e2){ /* both failed */ }
     note.textContent = 'Could not load live rates — check connection';
     note.className = 'conv-note error';
   }
